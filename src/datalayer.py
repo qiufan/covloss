@@ -28,20 +28,18 @@ class DataLayer(caffe.Layer):
         num_images = self._batch_size
         # Sample to use for each image in this batch
         sample = []
-	personname_vec=[]
-	while len(personname_vec)<self.num_c:
+	
+	while len(sample)<num_images:
 	    rand = random.randint(0,len(self.data_container._sample_person)-1)
-            personname = self.data_container._sample_person.keys()[rand]
-	    if ((personname) not in personname_vec) and len(self.data_container._sample_person[personname])>=self.num_im:
-                personname_vec.append(personname)
-	for person in personname_vec:
-	    sample_per=[]
-	    while len(sample_per)<self.num_im:
-	        picindex = random.randint(0,len(self.data_container._sample_person[person])-1)
-		if (self.data_container._sample_person[person][picindex]) not in sample_per:
-                    sample_per.append(self.data_container._sample_person[person][picindex])
-	    for i in sample_per:
-		sample.append(i)
+            personname_1 = self.data_container._sample_person.keys()[rand]
+	    rand = random.randint(0,len(self.data_container._sample_person)-1)
+	    personname_2 = self.data_container._sample_person.keys()[rand]
+	    if (personname_1==personname_2):
+		continue
+	    picindex_1 = random.randint(0,len(self.data_container._sample_person[personname_1])-1)
+	    picindex_2 = random.randint(0,len(self.data_container._sample_person[personname_2])-1)
+	    sample.append(self.data_container._sample_person[personname_1][picindex_1])
+	    sample.append(self.data_container._sample_person[personname_2][picindex_2])
         im_blob,labels_blob = self._get_image_blob(sample)
         #print sample
         blobs = {'data': im_blob,
@@ -69,9 +67,7 @@ class DataLayer(caffe.Layer):
         """Setup the RoIDataLayer."""
         # parse the layer parameter string, which must be valid YAML
         layer_params = yaml.load(self.param_str)    
-        self.num_c = config.num_class
-	self.num_im=config.num_im
-	self._batch_size=self.num_c*self.num_im
+	self._batch_size=config.batch_size
         self._name_to_top_map = {
             'data': 0,
             'labels': 1}
@@ -81,7 +77,7 @@ class DataLayer(caffe.Layer):
 
         # data blob: holds a batch of N images, each with 3 channels
         # The height and width (100 x 100) are dummy values
-        top[0].reshape(self._batch_size, 1, 96, 96)
+        top[0].reshape(self._batch_size, 1, 100, 100)
 
         top[1].reshape(self._batch_size)
 

@@ -10,9 +10,6 @@ SNAPSHOT_ITERS = 10000
 # Max training iteration
 MAX_ITERS = 400000
 
-# The number of classes in each minibatch
-num_class = 8
-
-# The number of images in each classes
-num_im = 10
+# batch size
+batch_size=10
 

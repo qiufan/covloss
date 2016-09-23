@@ -45,11 +45,11 @@ class Norm2Layer(caffe.Layer):
 	for i in range((bottom[0]).num):
 	    top_minibatch_diff_db.append(top[0].diff[i])
 	    top_minibatch_data_db.append(top[0].data[i])
-	    bottom_minibatch_data_db.append(bottom[0].data[i])
+	    bottom_minibatch_data_db.append(bottom[0].data[i].reshape(1,-1))
 	for i in range((bottom[0]).num):
 	    mul_y_diff_data=np.dot(top_minibatch_diff_db[i],top_minibatch_data_db[i])
-	    sqar_mul_xt_x=math.sqrt(np.dot(bottom_minibatch_data_db[i],bottom_minibatch_data_db[i]))
-	    bottom[0].diff[i]=(top_minibatch_diff_db[i]-mul_y_diff_data*top_minibatch_data_db[i])*1.0/sqar_mul_xt_x
+	    sqar_mul_xt_x=math.sqrt(np.dot(bottom_minibatch_data_db[i],bottom_minibatch_data_db[i].transpose()))
+	    bottom[0].diff[i]=((top_minibatch_diff_db[i]-mul_y_diff_data*top_minibatch_data_db[i])*1.0/sqar_mul_xt_x).reshape(bottom[0].data[0].shape)
     def reshape(self, bottom, top):
         """Reshaping happens during the call to forward."""
         pass
