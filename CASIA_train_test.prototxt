@@ -523,7 +523,7 @@ layer {
   bottom: "left"
   bottom: "right"
   top: "conloss"
-  loss_weight: 0.00005
+  loss_weight: 0.0005
   python_param {
     module: "cov_loss"
     layer: "CovLossLayer"

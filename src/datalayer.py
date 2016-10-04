@@ -40,6 +40,7 @@ class DataLayer(caffe.Layer):
 	    picindex_2 = random.randint(0,len(self.data_container._sample_person[personname_2])-1)
 	    sample.append(self.data_container._sample_person[personname_1][picindex_1])
 	    sample.append(self.data_container._sample_person[personname_2][picindex_2])
+
         im_blob,labels_blob = self._get_image_blob(sample)
         #print sample
         blobs = {'data': im_blob,
@@ -58,7 +59,7 @@ class DataLayer(caffe.Layer):
             im = prep_im_for_blob(im)
             
             im_blob.append(im)
-
+	labels_blob=np.array(labels_blob).astype(float32)
         # Create a blob to hold the input images
         blob = im_list_to_blob(im_blob)
         return blob,labels_blob

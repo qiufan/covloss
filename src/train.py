@@ -81,8 +81,8 @@ class SolverWrapper(object):
 if __name__ == '__main__':
     """Train network."""
     solver_prototxt = '../solver.prototxt'
-    output_dir = '../models/'
-    #pretrained_model = '../models/casia_8th_0904_iter_440000.caffemodel'
+    output_dir = '../result/'
+    pretrained_model = '../result/covloss_0930_iter_100000.caffemodel'
     #pretrained_model = None
     #pretrained_model = '/home/seal/dataset/fast-rcnn/data/vgg_face_caffe/VGG_FACE.caffemodel'
     max_iters = config.MAX_ITERS
